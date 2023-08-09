@@ -63,9 +63,9 @@ def main():
         while True:
             data = m5.get()
             if data["button_a"] and (time.time() - last_time >= motion_input_interval):
-                motion_index += 1
-                if motion_index > len(motion_list) - 1:
-                    motion_index = 0
+                motion_index -= 1
+                if motion_index < 0:
+                    motion_index = len(motion_list) - 1
                 # 行の表示をリフレッシュする
                 m5.set_display_text(text="                  \n", size=5, refresh=False)
                 m5.set_display_text(
@@ -84,9 +84,9 @@ def main():
                 )
                 last_time = time.time()
             if data["button_c"] and (time.time() - last_time >= motion_input_interval):
-                motion_index -= 1
-                if motion_index < 0:
-                    motion_index = len(motion_list) - 1
+                motion_index += 1
+                if motion_index > len(motion_list) - 1:
+                    motion_index = 0
                 # 行の表示をリフレッシュする
                 m5.set_display_text(text="                  \n", size=5, refresh=False)
                 m5.set_display_text(
