@@ -1,0 +1,40 @@
+syntax = "proto3";
+package motion_server;
+
+message SetMotionRequest {
+  string name = 1;
+  optional int32 priority = 2;
+  optional bool repeat = 3;
+  optional bool clear = 4;
+}
+
+message SetMotionReply {
+  bool success =1;
+}
+
+message ClearMotionRequest {
+}
+
+message ClearMotionReply {
+  bool success =1;
+}
+
+message SetWaitRequest {
+  float time = 1;
+  optional int32 priority = 2;
+  optional bool clear = 3;
+}
+
+message SetWaitReply {
+  bool success =1;
+}
+
+
+service MotionServerService {
+    rpc SetMotion(SetMotionRequest)
+        returns (SetMotionReply){}
+    rpc ClearMotion(ClearMotionRequest)
+        returns (ClearMotionReply){}
+    rpc SetWait(SetWaitRequest)
+        returns (SetWaitReply){}
+}
