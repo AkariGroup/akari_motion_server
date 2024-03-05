@@ -39,6 +39,9 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
 
     def __exit__(self):
         self.motion_thread.join()
+        self.repeat = False
+        while not self.motion_queue.empty():
+            self.motion_queue.get()
 
     def player(self):
         while True:
@@ -84,6 +87,7 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
         self.motion_queue.put((Command.MOVE, 0, 0.3, 0.3, True))
         self.motion_queue.put((Command.MOVE, 0, -0.3, 0.3, True))
         self.motion_queue.put((Command.MOVE, 0, 0.3, 0.3, True))
+        self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
 
     def motion_happy(self):
         self.motion_queue.put((Command.VEL, 0, 9, 11))
@@ -130,6 +134,12 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
         self.motion_queue.put((Command.MOVE, 4, 0.3, 0.5, True))
         self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
 
+    def motion_look_around(self):
+        self.motion_queue.put((Command.VEL, 0, 4, 4))
+        self.motion_queue.put((Command.MOVE, 4, 0.95, 0, True))
+        self.motion_queue.put((Command.MOVE, 4, -0.95, 0, True))
+        self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
+
     def play_motion(self, name: str):
         if name == "nod":
             self.motion_nod()
@@ -151,6 +161,8 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
             self.motion_sleep()
         elif name == "lookup":
             self.motion_lookup()
+        elif name == "lookaround":
+            self.motion_look_around()
         else:
             return False
         print("Set motion: " + name)
@@ -159,6 +171,7 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
     def SetMotion(self, request: motion_server_pb2.SetMotionRequest(), context):
         priority = 0
         repeat = False
+        print(f"received: {request.name}")
         if request.priority is not None:
             priority = request.priority
         if request.repeat is not None:
@@ -175,11 +188,23 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
             self.play_motion(request.name)
         return motion_server_pb2.SetMotionReply(success=True)
 
+    def StopRepeat(self, request: motion_server_pb2.StopRepeatRequest(), context):
+        priority = 0
+        if request.priority is not None:
+            priority = request.priority
+        if priority >= self.cur_priority:
+            self.repeat = False
+        return motion_server_pb2.StopRepeatReply(success=True)
+
     def ClearMotion(self, request: motion_server_pb2.ClearMotionRequest(), context):
-        self.repeat = False
-        while not self.motion_queue.empty():
-            self.motion_queue.get()
-        print("Clear motion queue")
+        priority = 0
+        if request.priority is not None:
+            priority = request.priority
+        if priority >= self.cur_priority:
+            self.repeat = False
+            while not self.motion_queue.empty():
+                self.motion_queue.get()
+            print("Clear motion queue")
         return motion_server_pb2.ClearMotionReply(success=True)
 
     def SetWait(self, request: motion_server_pb2.SetWaitRequest(), context):

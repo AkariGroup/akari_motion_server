@@ -24,6 +24,11 @@ class MotionServerServiceStub(object):
                 request_serializer=motion__server__pb2.ClearMotionRequest.SerializeToString,
                 response_deserializer=motion__server__pb2.ClearMotionReply.FromString,
                 )
+        self.StopRepeat = channel.unary_unary(
+                '/motion_server.MotionServerService/StopRepeat',
+                request_serializer=motion__server__pb2.StopRepeatRequest.SerializeToString,
+                response_deserializer=motion__server__pb2.StopRepeatReply.FromString,
+                )
         self.SetWait = channel.unary_unary(
                 '/motion_server.MotionServerService/SetWait',
                 request_serializer=motion__server__pb2.SetWaitRequest.SerializeToString,
@@ -41,6 +46,12 @@ class MotionServerServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ClearMotion(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StopRepeat(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -64,6 +75,11 @@ def add_MotionServerServiceServicer_to_server(servicer, server):
                     servicer.ClearMotion,
                     request_deserializer=motion__server__pb2.ClearMotionRequest.FromString,
                     response_serializer=motion__server__pb2.ClearMotionReply.SerializeToString,
+            ),
+            'StopRepeat': grpc.unary_unary_rpc_method_handler(
+                    servicer.StopRepeat,
+                    request_deserializer=motion__server__pb2.StopRepeatRequest.FromString,
+                    response_serializer=motion__server__pb2.StopRepeatReply.SerializeToString,
             ),
             'SetWait': grpc.unary_unary_rpc_method_handler(
                     servicer.SetWait,
@@ -111,6 +127,23 @@ class MotionServerService(object):
         return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/ClearMotion',
             motion__server__pb2.ClearMotionRequest.SerializeToString,
             motion__server__pb2.ClearMotionReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def StopRepeat(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/StopRepeat',
+            motion__server__pb2.StopRepeatRequest.SerializeToString,
+            motion__server__pb2.StopRepeatReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

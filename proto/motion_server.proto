@@ -13,9 +13,18 @@ message SetMotionReply {
 }
 
 message ClearMotionRequest {
+  optional int32 priority = 1;
 }
 
 message ClearMotionReply {
+  bool success =1;
+}
+
+message StopRepeatRequest {
+  optional int32 priority = 1;
+}
+
+message StopRepeatReply {
   bool success =1;
 }
 
@@ -35,6 +44,8 @@ service MotionServerService {
         returns (SetMotionReply){}
     rpc ClearMotion(ClearMotionRequest)
         returns (ClearMotionReply){}
+    rpc StopRepeat(StopRepeatRequest)
+        returns (StopRepeatReply){}
     rpc SetWait(SetWaitRequest)
         returns (SetWaitReply){}
 }

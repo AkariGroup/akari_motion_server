@@ -29,6 +29,7 @@ motion_list: List[str] = [
     "amazed",
     "sleep",
     "lookup",
+    "lookaround",
 ]
 
 
