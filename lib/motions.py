@@ -130,7 +130,7 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
         self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
 
     def motion_lookup(self):
-        self.motion_queue.put((Command.VEL, 0, 1.25, 3))
+        self.motion_queue.put((Command.VEL, 0, 2, 5))
         self.motion_queue.put((Command.MOVE, 4, 0.3, 0.5, True))
         self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
 
