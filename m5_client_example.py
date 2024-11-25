@@ -30,6 +30,9 @@ motion_list: List[str] = [
     "sleep",
     "lookup",
     "lookaround",
+    "lookleft",
+    "lookright",
+    "lookcenter",
 ]
 
 

@@ -140,6 +140,18 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
         self.motion_queue.put((Command.MOVE, 4, -0.95, 0, True))
         self.motion_queue.put((Command.MOVE, 0, 0, 0.3, True))
 
+    def motion_look_left(self):
+        self.motion_queue.put((Command.VEL, 0, 15, 15))
+        self.motion_queue.put((Command.MOVE, 0, 0.7, 0.3, True))
+
+    def motion_look_right(self):
+        self.motion_queue.put((Command.VEL, 0, 15, 15))
+        self.motion_queue.put((Command.MOVE, 0, -0.7, 0.3, True))
+
+    def motion_look_center(self):
+        self.motion_queue.put((Command.VEL, 0, 15, 15))
+        self.motion_queue.put((Command.MOVE, 0, 0.0, 0.3, True))
+
     def play_motion(self, name: str):
         if name == "nod":
             self.motion_nod()
@@ -163,6 +175,12 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
             self.motion_lookup()
         elif name == "lookaround":
             self.motion_look_around()
+        elif name == "lookleft":
+            self.motion_look_left()
+        elif name == "lookright":
+            self.motion_look_right()
+        elif name == "lookcenter":
+            self.motion_look_center()
         else:
             return False
         print("Set motion: " + name)
