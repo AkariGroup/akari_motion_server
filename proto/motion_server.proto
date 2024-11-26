@@ -9,7 +9,7 @@ message SetMotionRequest {
 }
 
 message SetMotionReply {
-  bool success =1;
+  bool success = 1;
 }
 
 message ClearMotionRequest {
@@ -17,7 +17,7 @@ message ClearMotionRequest {
 }
 
 message ClearMotionReply {
-  bool success =1;
+  bool success = 1;
 }
 
 message StopRepeatRequest {
@@ -25,7 +25,7 @@ message StopRepeatRequest {
 }
 
 message StopRepeatReply {
-  bool success =1;
+  bool success = 1;
 }
 
 message SetWaitRequest {
@@ -35,9 +35,38 @@ message SetWaitRequest {
 }
 
 message SetWaitReply {
-  bool success =1;
+  bool success = 1;
 }
 
+message SetPosRequest {
+  optional float pan = 1;
+  optional float tilt = 2;
+  optional int32 priority = 3;
+}
+
+message SetPosReply {
+  bool success = 1;
+}
+
+message SetVelRequest {
+  optional float pan = 1;
+  optional float tilt = 2;
+  optional int32 priority = 3;
+}
+
+message SetVelReply {
+  bool success = 1;
+}
+
+message SetAccRequest {
+  optional float pan = 1;
+  optional float tilt = 2;
+  optional int32 priority = 3;
+}
+
+message SetAccReply {
+  bool success = 1;
+}
 
 service MotionServerService {
     rpc SetMotion(SetMotionRequest)
@@ -48,4 +77,10 @@ service MotionServerService {
         returns (StopRepeatReply){}
     rpc SetWait(SetWaitRequest)
         returns (SetWaitReply){}
+    rpc SetPos(SetPosRequest)
+        returns (SetPosReply){}
+    rpc SetVel(SetVelRequest)
+        returns (SetVelReply){}
+    rpc SetAcc(SetAccRequest)
+        returns (SetAccReply){}
 }

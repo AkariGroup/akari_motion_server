@@ -18,12 +18,12 @@ stub = motion_server_pb2_grpc.MotionServerServiceStub(channel)
 
 def main():
     motion = "bow"
-    print("1.Send motion " + str(motion))
+    print(f"1.Send motion {motion}")
     reply = stub.SetMotion(motion_server_pb2.SetMotionRequest(name=motion, priority=3))
     time.sleep(3)
 
     motion = "nod"
-    print("2.Send motion " + str(motion) + " with repeat")
+    print(f"2.Send motion {motion} with repeat")
     reply = stub.SetMotion(
         motion_server_pb2.SetMotionRequest(name=motion, priority=3, repeat=True)
     )
@@ -34,26 +34,43 @@ def main():
     time.sleep(3)
 
     motion = "swing"
-    print("4.Send motion " + str(motion))
+    print(f"4.Send motion {motion}")
     reply = stub.SetMotion(motion_server_pb2.SetMotionRequest(name=motion, priority=3))
     time.sleep(1)
 
     motion = "sleep"
-    print("5.Send motion " + str(motion) + " with canceling previous motion")
+    print(f"5.Send motion {motion} with canceling previous motion")
     reply = stub.SetMotion(
         motion_server_pb2.SetMotionRequest(name=motion, priority=3, clear=True)
     )
     time.sleep(3)
 
     motion = "happy"
-    print("6.Set wait 2 sec and set motion " + str(motion))
+    print(f"6.Set wait 2 sec and set motion {motion}")
     reply = stub.SetWait(motion_server_pb2.SetWaitRequest(time=2.0, priority=3))
     reply = stub.SetMotion(motion_server_pb2.SetMotionRequest(name=motion, priority=3))
-    time.sleep(1)
+    time.sleep(3)
 
     motion = "lough"
-    print("7.Set motion " + str(motion) + " but it's priority is lower so it's ignored")
+    print(f"7.Set motion {motion} but it's priority is lower so it's ignored")
     reply = stub.SetMotion(motion_server_pb2.SetMotionRequest(name=motion, priority=2))
+    time.sleep(3)
+
+    pan = 8.0
+    tilt = 8.0
+    print(f"8.Set velocity pan: {pan}, tilt: {tilt}")
+    reply = stub.SetVel(motion_server_pb2.SetVelRequest(pan=pan, tilt=tilt, priority=3))
+    time.sleep(3)
+
+    pan = 0.4
+    tilt = 0.0
+    print(f"9.Set pos pan: {pan}, tilt: {tilt}")
+    reply = stub.SetPos(motion_server_pb2.SetPosRequest(pan=pan, tilt=tilt, priority=3))
+    time.sleep(3)
+
+    pan = 0.0
+    print(f"10.Set pos pan: {pan}")
+    reply = stub.SetPos(motion_server_pb2.SetPosRequest(pan=pan, priority=3))
     time.sleep(3)
 
     print("Finished!")
