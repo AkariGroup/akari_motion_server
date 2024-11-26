@@ -239,3 +239,27 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
             self.motion_queue.put((Command.WAIT, request.time))
             print("Set wait: " + str(request.time) + "[s]")
         return motion_server_pb2.SetWaitReply(success=True)
+
+    def SetPos(self, request: motion_server_pb2.ClearMotionRequest(), context):
+        priority = 0
+        if request.priority is not None:
+            priority = request.priority
+        if priority >= self.cur_priority:
+            self.motion_queue.put((Command.MOVE, 0, request.pan, request.tilt, True))
+        return motion_server_pb2.ClearMotionReply(success=True)
+
+    def SetVel(self, request: motion_server_pb2.SetVelRequest(), context):
+        priority = 0
+        if request.priority is not None:
+            priority = request.priority
+        if priority >= self.cur_priority:
+            self.motion_queue.put((Command.VEL, 0, request.pan, request.tilt, True))
+        return motion_server_pb2.SetVelReply(success=True)
+
+    def SetAcc(self, request: motion_server_pb2.SetAccRequest(), context):
+        priority = 0
+        if request.priority is not None:
+            priority = request.priority
+        if priority >= self.cur_priority:
+            self.motion_queue.put((Command.ACC, 0, request.pan, request.tilt, True))
+        return motion_server_pb2.SetAccReply(success=True)

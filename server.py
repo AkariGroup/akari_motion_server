@@ -21,11 +21,7 @@ def main():
     port = "50055"
     server.add_insecure_port("[::]:" + port)
     server.start()
-    try:
-        while True:
-            time.sleep(0.1)
-    except KeyboardInterrupt:
-        exit()
+    server.wait_for_termination()
 
 
 if __name__ == "__main__":

@@ -34,6 +34,21 @@ class MotionServerServiceStub(object):
                 request_serializer=motion__server__pb2.SetWaitRequest.SerializeToString,
                 response_deserializer=motion__server__pb2.SetWaitReply.FromString,
                 )
+        self.SetPos = channel.unary_unary(
+                '/motion_server.MotionServerService/SetPos',
+                request_serializer=motion__server__pb2.SetPosRequest.SerializeToString,
+                response_deserializer=motion__server__pb2.SetPosReply.FromString,
+                )
+        self.SetVel = channel.unary_unary(
+                '/motion_server.MotionServerService/SetVel',
+                request_serializer=motion__server__pb2.SetVelRequest.SerializeToString,
+                response_deserializer=motion__server__pb2.SetVelReply.FromString,
+                )
+        self.SetAcc = channel.unary_unary(
+                '/motion_server.MotionServerService/SetAcc',
+                request_serializer=motion__server__pb2.SetAccRequest.SerializeToString,
+                response_deserializer=motion__server__pb2.SetAccReply.FromString,
+                )
 
 
 class MotionServerServiceServicer(object):
@@ -63,6 +78,24 @@ class MotionServerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetPos(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetVel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetAcc(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MotionServerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -85,6 +118,21 @@ def add_MotionServerServiceServicer_to_server(servicer, server):
                     servicer.SetWait,
                     request_deserializer=motion__server__pb2.SetWaitRequest.FromString,
                     response_serializer=motion__server__pb2.SetWaitReply.SerializeToString,
+            ),
+            'SetPos': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetPos,
+                    request_deserializer=motion__server__pb2.SetPosRequest.FromString,
+                    response_serializer=motion__server__pb2.SetPosReply.SerializeToString,
+            ),
+            'SetVel': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetVel,
+                    request_deserializer=motion__server__pb2.SetVelRequest.FromString,
+                    response_serializer=motion__server__pb2.SetVelReply.SerializeToString,
+            ),
+            'SetAcc': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetAcc,
+                    request_deserializer=motion__server__pb2.SetAccRequest.FromString,
+                    response_serializer=motion__server__pb2.SetAccReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -161,5 +209,56 @@ class MotionServerService(object):
         return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/SetWait',
             motion__server__pb2.SetWaitRequest.SerializeToString,
             motion__server__pb2.SetWaitReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetPos(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/SetPos',
+            motion__server__pb2.SetPosRequest.SerializeToString,
+            motion__server__pb2.SetPosReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetVel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/SetVel',
+            motion__server__pb2.SetVelRequest.SerializeToString,
+            motion__server__pb2.SetVelReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetAcc(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/motion_server.MotionServerService/SetAcc',
+            motion__server__pb2.SetAccRequest.SerializeToString,
+            motion__server__pb2.SetAccReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
