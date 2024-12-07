@@ -190,11 +190,11 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
         priority = 0
         repeat = False
         print(f"received: {request.name}")
-        if request.priority is not None:
+        if request.HasField("priority"):
             priority = request.priority
-        if request.repeat is not None:
+        if request.HasField("repeat"):
             repeat = request.repeat
-        if request.clear is not None:
+        if request.HasField("clear"):
             if request.clear:
                 while not self.motion_queue.empty():
                     self.motion_queue.get()
@@ -208,7 +208,7 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
 
     def StopRepeat(self, request: motion_server_pb2.StopRepeatRequest(), context):
         priority = 0
-        if request.priority is not None:
+        if request.HasField("priority"):
             priority = request.priority
         if priority >= self.cur_priority:
             self.repeat = False
@@ -216,7 +216,7 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
 
     def ClearMotion(self, request: motion_server_pb2.ClearMotionRequest(), context):
         priority = 0
-        if request.priority is not None:
+        if request.HasField("priority"):
             priority = request.priority
         if priority >= self.cur_priority:
             self.repeat = False
@@ -227,9 +227,9 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
 
     def SetWait(self, request: motion_server_pb2.SetWaitRequest(), context):
         priority = 3
-        if request.priority is not None:
+        if request.HasField("priority"):
             priority = request.priority
-        if request.clear is not None:
+        if request.HasField("clear"):
             if request.clear:
                 while not self.motion_queue.empty():
                     self.motion_queue.get()
@@ -242,24 +242,42 @@ class MotionServer(motion_server_pb2_grpc.MotionServerServiceServicer):
 
     def SetPos(self, request: motion_server_pb2.ClearMotionRequest(), context):
         priority = 0
-        if request.priority is not None:
+        pan = None
+        tilt = None
+        if request.HasField("pan"):
+            pan = request.pan
+        if request.HasField("tilt"):
+            tilt = request.tilt
+        if request.HasField("priority"):
             priority = request.priority
         if priority >= self.cur_priority:
-            self.motion_queue.put((Command.MOVE, 0, request.pan, request.tilt, True))
+            self.motion_queue.put((Command.MOVE, 0, pan, tilt, True))
         return motion_server_pb2.ClearMotionReply(success=True)
 
     def SetVel(self, request: motion_server_pb2.SetVelRequest(), context):
         priority = 0
-        if request.priority is not None:
+        pan = None
+        tilt = None
+        if request.HasField("pan"):
+            pan = request.pan
+        if request.HasField("tilt"):
+            tilt = request.tilt
+        if request.HasField("priority"):
             priority = request.priority
         if priority >= self.cur_priority:
-            self.motion_queue.put((Command.VEL, 0, request.pan, request.tilt, True))
+            self.motion_queue.put((Command.VEL, 0, pan, tilt, True))
         return motion_server_pb2.SetVelReply(success=True)
 
     def SetAcc(self, request: motion_server_pb2.SetAccRequest(), context):
         priority = 0
-        if request.priority is not None:
+        pan = None
+        tilt = None
+        if request.HasField("pan"):
+            pan = request.pan
+        if request.HasField("tilt"):
+            tilt = request.tilt
+        if request.HasField("priority"):
             priority = request.priority
         if priority >= self.cur_priority:
-            self.motion_queue.put((Command.ACC, 0, request.pan, request.tilt, True))
+            self.motion_queue.put((Command.ACC, 0, pan, tilt, True))
         return motion_server_pb2.SetAccReply(success=True)
